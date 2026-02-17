@@ -40,14 +40,20 @@
   },
   "keywords": [
     "react-native",
+    "expo",
     "ios",
-    "android"
+    "android",
+    "hijri",
+    "islamic",
+    "umm-al-qura",
+    "calendar",
+    "turbomodule"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/F2had/hijri-native.git"
   },
-  "author": "Fahad <> ()",
+  "author": "Fahad",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/F2had/hijri-native/issues"
