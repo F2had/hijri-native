@@ -1,6 +1,6 @@
 {
   "name": "hijri-native",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "React Native TurboModule for Hijri (Islamic Umm al-Qura) calendar conversion using native OS APIs",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
