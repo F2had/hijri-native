@@ -1,4 +1,5 @@
 import HijriNativeModule from './NativeHijriNative';
+import { isEqual, isBefore, isAfter } from './pure-utils';
 
 export type HijriDate = {
   year: number;
@@ -6,16 +7,26 @@ export type HijriDate = {
   day: number;
 };
 
+export { isEqual, isBefore, isAfter };
+
 // ---------------------------------------------------------------------------
 // Validation
 // ---------------------------------------------------------------------------
 
 function validateGregorianDate(year: number, month: number, day: number) {
-  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
-    throw new Error(`[hijri-native] Date components must be integers, got (${year}, ${month}, ${day})`);
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day)
+  ) {
+    throw new Error(
+      `[hijri-native] Date components must be integers, got (${year}, ${month}, ${day})`
+    );
   }
   if (month < 1 || month > 12) {
-    throw new Error(`[hijri-native] Gregorian month must be 1–12, got ${month}`);
+    throw new Error(
+      `[hijri-native] Gregorian month must be 1–12, got ${month}`
+    );
   }
   if (day < 1 || day > 31) {
     throw new Error(`[hijri-native] Gregorian day must be 1–31, got ${day}`);
@@ -23,8 +34,14 @@ function validateGregorianDate(year: number, month: number, day: number) {
 }
 
 function validateHijriDate(year: number, month: number, day: number) {
-  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
-    throw new Error(`[hijri-native] Date components must be integers, got (${year}, ${month}, ${day})`);
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day)
+  ) {
+    throw new Error(
+      `[hijri-native] Date components must be integers, got (${year}, ${month}, ${day})`
+    );
   }
   if (year < 1) {
     throw new Error(`[hijri-native] Hijri year must be positive, got ${year}`);
@@ -39,7 +56,9 @@ function validateHijriDate(year: number, month: number, day: number) {
 
 function validateTimezone(timezone: string) {
   if (!timezone || typeof timezone !== 'string') {
-    throw new Error(`[hijri-native] Timezone must be a non-empty IANA string, got "${timezone}"`);
+    throw new Error(
+      `[hijri-native] Timezone must be a non-empty IANA string, got "${timezone}"`
+    );
   }
 }
 
@@ -52,14 +71,20 @@ export function toHijri(year: number, month: number, day: number): HijriDate {
   return HijriNativeModule.toHijri(year, month, day);
 }
 
-export function toGregorian(year: number, month: number, day: number): HijriDate {
+export function toGregorian(
+  year: number,
+  month: number,
+  day: number
+): HijriDate {
   validateHijriDate(year, month, day);
   return HijriNativeModule.toGregorian(year, month, day);
 }
 
 export function fromTimestamp(timestamp: number, timezone: string): HijriDate {
   if (typeof timestamp !== 'number' || !Number.isFinite(timestamp)) {
-    throw new Error(`[hijri-native] Timestamp must be a finite number, got ${timestamp}`);
+    throw new Error(
+      `[hijri-native] Timestamp must be a finite number, got ${timestamp}`
+    );
   }
   validateTimezone(timezone);
   return HijriNativeModule.fromTimestamp(timestamp, timezone);
@@ -78,20 +103,6 @@ export function today(timezone: string): HijriDate {
 // ---------------------------------------------------------------------------
 // Convenience utilities (pure TypeScript)
 // ---------------------------------------------------------------------------
-
-export function isEqual(a: HijriDate, b: HijriDate): boolean {
-  return a.year === b.year && a.month === b.month && a.day === b.day;
-}
-
-export function isBefore(a: HijriDate, b: HijriDate): boolean {
-  if (a.year !== b.year) return a.year < b.year;
-  if (a.month !== b.month) return a.month < b.month;
-  return a.day < b.day;
-}
-
-export function isAfter(a: HijriDate, b: HijriDate): boolean {
-  return !isBefore(a, b) && !isEqual(a, b);
-}
 
 export function differenceInDays(a: HijriDate, b: HijriDate): number {
   const gregA = toGregorian(a.year, a.month, a.day);
@@ -113,9 +124,5 @@ export function addDays(date: HijriDate, days: number): HijriDate {
   const jsDate = new Date(greg.year, greg.month - 1, greg.day);
   jsDate.setDate(jsDate.getDate() + days);
 
-  return toHijri(
-    jsDate.getFullYear(),
-    jsDate.getMonth() + 1,
-    jsDate.getDate()
-  );
+  return toHijri(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
 }
