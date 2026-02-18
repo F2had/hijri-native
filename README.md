@@ -1,14 +1,29 @@
 # hijri-native
 
 [![CI](https://github.com/F2had/hijri-native/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/F2had/hijri-native/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/hijri-native.svg)](https://www.npmjs.com/package/hijri-native)
+[![npm downloads](https://img.shields.io/npm/dm/hijri-native.svg)](https://www.npmjs.com/package/hijri-native)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Gregorian ↔ Hijri (Umm al-Qura) conversion using native OS APIs. iOS uses `NSCalendar.islamicUmmAlQura`, Android uses `java.time.chrono.HijrahChronology`. No JS math, no lookup tables.
+Gregorian ↔ Hijri (Umm al-Qura) calendar conversion for React Native using **native OS APIs**.
+
+- 🍎 **iOS**: `NSCalendar.islamicUmmAlQura`
+- 🤖 **Android**: `java.time.chrono.HijrahChronology`
+
+✅ No JavaScript math  
+✅ No lookup tables  
+✅ Zero dependencies  
+✅ TypeScript support
+
+---
 
 ## Requirements
 
 - React Native 0.76+ (New Architecture / TurboModules)
 - iOS 13+
 - Android API 24+
+
+---
 
 ## Installation
 
@@ -20,15 +35,19 @@ yarn add hijri-native
 bun add hijri-native
 ```
 
-## API
+---
+
+## Core API
+
+### Conversion Functions
 
 ```typescript
 import {
-  toHijri,
-  toGregorian,
-  fromTimestamp,
-  getDaysInMonth,
-  today,
+  toHijri, // Gregorian → Hijri
+  toGregorian, // Hijri → Gregorian
+  fromTimestamp, // Unix timestamp → Hijri
+  getDaysInMonth, // Get days in Hijri month
+  today, // Today's Hijri date
 } from 'hijri-native';
 
 // Gregorian → Hijri
@@ -45,11 +64,13 @@ const hijriNow = fromTimestamp(Math.floor(Date.now() / 1000), 'Asia/Riyadh');
 // Today's Hijri date in a timezone
 const todayHijri = today('Asia/Riyadh');
 
-// Days in a Hijri month
-const days = getDaysInMonth(8, 1447); // 29 or 30
+// Days in a Hijri month (29 or 30)
+const days = getDaysInMonth(8, 1447);
 ```
 
-## Utilities
+---
+
+## Utility Functions
 
 ```typescript
 import {
@@ -66,9 +87,11 @@ const b = { year: 1447, month: 9, day: 1 };
 isEqual(a, b); // false
 isBefore(a, b); // true
 isAfter(a, b); // false
-differenceInDays(a, b); // 10
+differenceInDays(a, b); // ~10
 addDays(a, 5); // { year: 1447, month: 8, day: 25 }
 ```
+
+---
 
 ## Types
 
@@ -77,6 +100,19 @@ import type { HijriDate } from 'hijri-native';
 // { year: number; month: number; day: number }
 ```
 
+---
+
+## Why hijri-native?
+
+| Feature     | hijri-native      | JS Libraries       |
+| ----------- | ----------------- | ------------------ |
+| Accuracy    | ✅ Native OS APIs | ⚠️ Algorithm-based |
+| Performance | ✅ Native speed   | ⚠️ JS calculations |
+| Bundle size | ✅ Zero deps      | ⚠️ Large tables    |
+| Umm al-Qura | ✅ iOS & Android  | ⚠️ Limited support |
+
+---
+
 ## License
 
-MIT
+MIT © [Fahad](https://github.com/F2had)
