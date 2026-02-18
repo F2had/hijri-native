@@ -31,6 +31,23 @@ jobs:
       - name: Typecheck files
         run: yarn typecheck
 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@4bc047ad25957c448a978be42adc7d43a95f31b9 # v1.2.0
+        with:
+          bun-version: latest
+
+      - name: Run tests
+        run: bun test src/__tests__/pure-utils.test.ts
 
   build-library:
     runs-on: ubuntu-latest
@@ -104,7 +121,7 @@ jobs:
 
       - name: Build example for Android
         env:
-          JAVA_OPTS: "-XX:MaxHeapSize=6g"
+          JAVA_OPTS: '-XX:MaxHeapSize=6g'
         run: |
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
