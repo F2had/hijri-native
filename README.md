@@ -1,5 +1,7 @@
 # hijri-native
 
+[![CI](https://github.com/F2had/hijri-native/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/F2had/hijri-native/actions/workflows/ci.yml)
+
 Gregorian ↔ Hijri (Umm al-Qura) conversion using native OS APIs. iOS uses `NSCalendar.islamicUmmAlQura`, Android uses `java.time.chrono.HijrahChronology`. No JS math, no lookup tables.
 
 ## Requirements
@@ -21,7 +23,13 @@ bun add hijri-native
 ## API
 
 ```typescript
-import { toHijri, toGregorian, fromTimestamp, getDaysInMonth, today } from 'hijri-native';
+import {
+  toHijri,
+  toGregorian,
+  fromTimestamp,
+  getDaysInMonth,
+  today,
+} from 'hijri-native';
 
 // Gregorian → Hijri
 const hijri = toHijri(2026, 2, 18);
@@ -44,16 +52,22 @@ const days = getDaysInMonth(8, 1447); // 29 or 30
 ## Utilities
 
 ```typescript
-import { isEqual, isBefore, isAfter, differenceInDays, addDays } from 'hijri-native';
+import {
+  isEqual,
+  isBefore,
+  isAfter,
+  differenceInDays,
+  addDays,
+} from 'hijri-native';
 
 const a = { year: 1447, month: 8, day: 20 };
 const b = { year: 1447, month: 9, day: 1 };
 
-isEqual(a, b);          // false
-isBefore(a, b);         // true
-isAfter(a, b);          // false
+isEqual(a, b); // false
+isBefore(a, b); // true
+isAfter(a, b); // false
 differenceInDays(a, b); // 10
-addDays(a, 5);          // { year: 1447, month: 8, day: 25 }
+addDays(a, 5); // { year: 1447, month: 8, day: 25 }
 ```
 
 ## Types
