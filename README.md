@@ -27,11 +27,21 @@ Gregorian ↔ Hijri (Umm al-Qura) calendar conversion for React Native using **n
 
 ## Installation
 
+**npm:**
+
 ```sh
 npm install hijri-native
-# or
+```
+
+**yarn:**
+
+```sh
 yarn add hijri-native
-# or
+```
+
+**bun:**
+
+```sh
 bun add hijri-native
 ```
 
