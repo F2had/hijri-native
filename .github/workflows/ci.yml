@@ -42,7 +42,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@4bc047ad25957c448a978be42adc7d43a95f31b9 # v1.2.0
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
