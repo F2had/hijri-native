@@ -28,4 +28,14 @@ export interface Spec extends TurboModule {
   today(timezone: string): DateResult;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('HijriNative');
+/**
+ * Resolved with `get` rather than `getEnforcing` so that *importing* this
+ * package never throws where the native binary is absent — Jest, SSR, web
+ * bundles, or a consumer that only re-exports us. Callers go through
+ * `requireNative()` in index.tsx, which raises a clear error at the point a
+ * calendar method is actually used.
+ *
+ * The call stays at the top level: React Native's codegen reads the module
+ * name from this expression, so it must not move inside a function.
+ */
+export default TurboModuleRegistry.get<Spec>('HijriNative');

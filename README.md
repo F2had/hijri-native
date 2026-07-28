@@ -101,6 +101,41 @@ differenceInDays(a, b); // ~10
 addDays(a, 5); // { year: 1447, month: 8, day: 25 }
 ```
 
+`isEqual`, `isBefore` and `isAfter` are pure TypeScript and need no native
+module. Import them from `hijri-native/pure` to use them anywhere — tests, server
+code, web bundles — with no native dependency at all:
+
+```typescript
+import { isEqual, isBefore, isAfter } from 'hijri-native/pure';
+```
+
+---
+
+## Testing
+
+Importing this package is side-effect free: the native module is resolved with
+`TurboModuleRegistry.get`, so nothing throws until you call a conversion
+function. A test that merely imports a module which re-exports `hijri-native`
+therefore needs no mock.
+
+To exercise the conversion functions themselves, mock the package:
+
+```typescript
+jest.mock('hijri-native', () => ({
+  today: () => ({ year: 1447, month: 8, day: 20 }),
+  toHijri: () => ({ year: 1447, month: 8, day: 20 }),
+  toGregorian: () => ({ year: 2026, month: 2, day: 8 }),
+}));
+```
+
+Use `isAvailable()` to branch at runtime where the native module may be missing:
+
+```typescript
+import { isAvailable, today } from 'hijri-native';
+
+const hijri = isAvailable() ? today('Asia/Riyadh') : null;
+```
+
 ---
 
 ## Types

@@ -1,4 +1,4 @@
-import HijriNativeModule from './NativeHijriNative';
+import HijriNativeModule, { type Spec } from './NativeHijriNative';
 import { isEqual, isBefore, isAfter } from './pure-utils';
 
 export type HijriDate = {
@@ -8,6 +8,27 @@ export type HijriDate = {
 };
 
 export { isEqual, isBefore, isAfter };
+
+/** True when the native module is linked and calendar methods can be called. */
+export function isAvailable(): boolean {
+  return HijriNativeModule != null;
+}
+
+/**
+ * The native module, or a clear error if it is missing. Importing this package
+ * is side-effect free; the cost of native only lands here, when a calendar
+ * method is actually called.
+ */
+function requireNative(): Spec {
+  if (HijriNativeModule == null) {
+    throw new Error(
+      "[hijri-native] The native module isn't available. Rebuild the app after " +
+        'installing (pod install on iOS, a Gradle sync on Android). In Jest, ' +
+        "mock 'hijri-native' or use the pure helpers from 'hijri-native/pure'."
+    );
+  }
+  return HijriNativeModule;
+}
 
 // ---------------------------------------------------------------------------
 // Validation
@@ -68,7 +89,7 @@ function validateTimezone(timezone: string) {
 
 export function toHijri(year: number, month: number, day: number): HijriDate {
   validateGregorianDate(year, month, day);
-  return HijriNativeModule.toHijri(year, month, day);
+  return requireNative().toHijri(year, month, day);
 }
 
 export function toGregorian(
@@ -77,7 +98,7 @@ export function toGregorian(
   day: number
 ): HijriDate {
   validateHijriDate(year, month, day);
-  return HijriNativeModule.toGregorian(year, month, day);
+  return requireNative().toGregorian(year, month, day);
 }
 
 export function fromTimestamp(timestamp: number, timezone: string): HijriDate {
@@ -87,17 +108,17 @@ export function fromTimestamp(timestamp: number, timezone: string): HijriDate {
     );
   }
   validateTimezone(timezone);
-  return HijriNativeModule.fromTimestamp(timestamp, timezone);
+  return requireNative().fromTimestamp(timestamp, timezone);
 }
 
 export function getDaysInMonth(month: number, year: number): number {
   validateHijriDate(year, month, 1);
-  return HijriNativeModule.getDaysInMonth(month, year);
+  return requireNative().getDaysInMonth(month, year);
 }
 
 export function today(timezone: string): HijriDate {
   validateTimezone(timezone);
-  return HijriNativeModule.today(timezone);
+  return requireNative().today(timezone);
 }
 
 // ---------------------------------------------------------------------------
